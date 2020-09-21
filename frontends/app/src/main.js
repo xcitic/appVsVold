@@ -8,7 +8,7 @@ import ApiService from './services/ApiService.js';
 
 
 const apiService = new ApiService();
-const userService = new UserService(apiService);
+export const userService = new UserService(apiService);
 
 Vue.prototype.$userService = userService;
 Vue.prototype.$apiService = apiService;

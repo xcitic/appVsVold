@@ -12,6 +12,7 @@ export default class ApiService {
 
     setAxiosConfig() {
         return axios.create({
+            baseURL: this.endpoint,
             headers: {
                 'Token': `${this.token}`,
                 'Accept': 'application/json'
@@ -25,16 +26,16 @@ export default class ApiService {
     }
 
 
-    async apiCall(method, url, payload = null) {
+    async apiCall(method, resource, data = null) {
         try {
             const response = await this.axiosConfig({
                 method,
                 url: resource,
-                payload
-            })
+                data
+            });
             return response.data;
         } catch (e) {
-            throw e.response.data.message;
+            throw e.response.data.message
         }
     }
     
