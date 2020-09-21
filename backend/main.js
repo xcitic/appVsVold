@@ -22,12 +22,20 @@ app.use(passport.initialize());
 
 
 app.post('/login', async (req, res) => {
-    UserController.login(req, res);
+    try {
+        UserController.login(req, res);
+    } catch (e) {
+        res.send(400).status(e);
+    }
 });
 
 
 app.post('/register', (req, res) => {
-    UserController.register(req, res);
+    try {
+        UserController.register(req, res);
+    } catch (e) {
+        res.status(400).send(e);
+    }
 });
 
 app.post('/reset-password', (req, res) => {
@@ -47,15 +55,27 @@ app.post('/reset-password/:id', (req, res) => {
 
 
 router.use( (req, res, next) => {
-    Authentication.verifyToken(req, res, next);
+    try {   
+        Authentication.verifyToken(req, res, next);
+    } catch (e) {
+        res.status(401).send(e.message);
+    }
 });
 
 router.get('/logs', async (req, res, next) => {
-    await LogController.getAllLogsForUser(req, res);
+    try {
+        await LogController.getAllLogsForUser(req, res);
+    } catch (e) {
+        res.status(400).send(e);
+    }
 });
 
 router.post('/logs', async (req, res, next) => {
-    await LogController.storeLog(req, res, next);
+    try {
+        await LogController.storeLog(req, res, next);
+    } catch (e) {
+        res.status(400).send(e);
+    }
 });
 
 app.use('/api', router, (req, res) => {

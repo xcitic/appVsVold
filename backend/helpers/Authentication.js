@@ -23,6 +23,7 @@ const Authentication = {
                 return res.send('Token has expired');
             } else {
                req.token = decrypted;
+               req.userId = decrypted.userId;
                next()
             }
         } catch (err) {
