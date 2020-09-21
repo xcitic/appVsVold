@@ -2,4 +2,4 @@ node_modules/
 yarn.lock
 .idea
 keypair/
-data/
+data/   
