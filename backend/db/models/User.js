@@ -4,6 +4,10 @@ import passportLocalMongoose from 'passport-local-mongoose';
 const User = mongoose.Schema({
   username: String,
   password: String,
+  firstTimeVisit: {
+    type: Boolean,
+    default: true
+  }
 }, {
   timestamps: true
 });

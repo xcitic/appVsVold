@@ -27,8 +27,13 @@ const UserController = {
                   return res.status(401).send({success: false, message: err});
               } else {
                   const token = UserController.generateToken(user);
+                  const reponse = {
+                      token: token,
+                      firstTimeVisit: user.firstTimeVisit,
+                      username: user.username
+                  }
                   saveTokenInRedis(user, token);
-                  return res.status(200).cookie('token', token).send({success: true, message: "Authenticated successfully", token});
+                  return res.status(200).cookie('token', token).send({success: true, message: "Authenticated successfully", ...reponse});
               }
           })
       })(req, res)
