@@ -12,6 +12,17 @@ export default class UserService {
         this.checkIfFirstTimeVisit();
     }
 
+    isUserLoggedIn(){
+        if (this.isLoggedIn) {
+            return true;
+        }
+        const token = localStorage.getItem("token");
+        if(token) {
+            return true;
+        }
+        return false;
+    }
+
 
     checkIfTokenExists() {
         // check localstorage for token 
@@ -40,21 +51,24 @@ export default class UserService {
     async login(credentials) {
         try {
             const response = await this.apiService.apiCall('POST', '/login', credentials);
-            console.log(response);
             this.setUserInfo(response);
             this.saveInLocalStorage(response);
-
             return response;
         } catch (e) {
             throw e;
         }
-        // api call to login route
-        // set token, username, firstTimeVisit and isLoggedIn
     }
 
     async register(credentials) {
-        // api call to register route
-        // set token, username, firstTimeVisit and isLoggedIn
+        try {
+            const response = await this.apiService.apiCall('POST', '/register', credentials);
+            console.log(response)
+            this.setUserInfo(response);
+            this.saveInLocalStorage(response);
+            return response;
+        } catch (e) {
+            throw e;
+        }
     }
 
     setUserInfo(userInfo) {
@@ -65,7 +79,9 @@ export default class UserService {
     }
 
     saveInLocalStorage(response) {
-        // save in localStorage
+        localStorage.setItem("token", JSON.stringify(response.token));
+        localStorage.setItem("username", JSON.stringify(response.username));
+        localStorage.setItem("firstTimeVisit", JSON.stringify(response.firstTimeVisit))
     }
 
 

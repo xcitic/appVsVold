@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Home from '@/views/Home.vue';
+import Log from '@/views/Log.vue';
 
 
 Vue.use(VueRouter)
@@ -8,12 +10,18 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
+    meta: {
+      shouldNotBeLoggedIn: true,
+    },
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => () => import(/* webpackChunkName: "register" */ '../views/Register.vue')
+    meta: {
+      shouldNotBeLoggedIn: true
+    },
+    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue')
   },
   {
     path: '',
@@ -21,7 +29,7 @@ const routes = [
       requiresLogin: true
     },
     name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue') 
+    component: Home
   },
   {
     path: '/log',
@@ -29,7 +37,7 @@ const routes = [
       requiresLogin: true
     },
     name: 'Log',
-    component: () => import(/* webpackChunkName: "log" */ '../views/Log.vue')
+    component: Log
   },
   {
     path: '*',
@@ -46,14 +54,18 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if(to.matched.some(m => m.meta.requiresLogin)) {
-    if (router.app.$userService.isLoggedIn) {
+    if (router.app.$userService.isUserLoggedIn()) {
       next()
     } else {
       next("/login");
     }
-  } else {
-    next();
+  } 
+  if(to.matched.some(m => m.meta.shouldNotBeLoggedIn)) {
+    if (router.app.$userService.isUserLoggedIn()) {
+      next("/home")
+    }
   }
+  next()
 })
 
 export default router;

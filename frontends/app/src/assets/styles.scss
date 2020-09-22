@@ -1,0 +1,27 @@
+$color_main: #303F9F;
+$color-secondary: #3F51B5;
+
+* {
+    box-sizing: border-box;
+    font-size: 1.4rem;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+
+.btn-main {
+    flex: 1 1 75%;
+    margin: 1rem 2rem;
+    padding: 0.25rem 1rem;
+    background-color: $color-main;
+    color: white;
+    border-radius: .2rem;
+    border: none;
+
+    &:active,
+    &:focus {
+        box-shadow: 0 0 0 .15rem $color-secondary;
+    }
+}

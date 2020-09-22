@@ -39,6 +39,15 @@ export default new Vuex.Store({
         commit('setError', e);
         throw e;
       }
+    },
+
+    async userRegister({commit}, credentials) {
+      try {
+        const response = await userService.register(credentials);
+        commit('setUserInfo', response);
+      } catch (e) {
+        throw e;
+      }
     }
   },
   modules: {
