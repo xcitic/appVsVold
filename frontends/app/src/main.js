@@ -3,8 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
-import UserService from './services/UserService.js';
-import ApiService from './services/ApiService.js';
+import UserService from './services/UserService.ts';
+import ApiService from './services/ApiService.ts';
 
 
 const apiService = new ApiService();

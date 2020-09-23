@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {userService} from '../main.js';
+import {userService, logService} from '../main.js';
 
 Vue.use(Vuex)
 
@@ -45,6 +45,15 @@ export default new Vuex.Store({
       try {
         const response = await userService.register(credentials);
         commit('setUserInfo', response);
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    async getLogs({commit}) {
+      try {
+        const logs = await logService.getMyLogs();
+        commit('setLogs', logs);
       } catch (e) {
         throw e;
       }

@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosInstance, Method } from 'axios';
 
 export default class ApiService {
-    endpoint = 'http://localhost:4000';
-    axiosConfig;
-    token;
+    endpoint: string = 'http://localhost:4000';
+    axiosConfig: AxiosInstance;
+    token: string;
 
     constructor() {
         this.axiosConfig = this.setAxiosConfig();
@@ -20,13 +20,13 @@ export default class ApiService {
         });
     }
 
-    updateToken(token) {
+    updateToken(token: string) {
         this.token = token;
         this.axiosConfig = this.setAxiosConfig();
     }
 
 
-    async apiCall(method, resource, data = null) {
+    async apiCall(method: Method, resource: string, data?: any) {
         try {
             const response = await this.axiosConfig({
                 method,
