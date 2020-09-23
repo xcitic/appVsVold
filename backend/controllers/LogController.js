@@ -1,10 +1,9 @@
 import Log from '../db/models/Log.js';
-import Authentication from '../helpers/Authentication.js';
 
 const LogController = {
 
     async getAllLogsForUser(req, res) {
-        const userId = req.token.userId
+        const userId = req.userId
 
         if (!userId) {
             res.sendStatus(403, "Unauthorized");
@@ -21,12 +20,13 @@ const LogController = {
 
 
     async storeLog(req, res) {
-        const userId = req.token.userId
+        const userId = req.userId
 
         try {
             const userInput = req.body;
             const log = new Log({
                 user: userId,
+                title: userInput.title,
                 description: userInput.description,
                 files: userInput.files,
                 location: userInput.location,

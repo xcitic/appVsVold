@@ -4,6 +4,9 @@ const LogSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  title: {
+    type: String
+  },
   description: {
       type: String
   },
@@ -26,10 +29,17 @@ const LogSchema = mongoose.Schema({
       },
       longitude: {
           type: Number
+      },
+      address: {
+          type: String
       }
   },
   date: {
       type: String
+  },
+  hide: {
+      type: Boolean,
+      default: false
   }
 }, {
   timestamps: true
