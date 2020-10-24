@@ -18,6 +18,8 @@ export default class UserService {
         }
         const token = localStorage.getItem("token");
         if(token) {
+            this.getInfoFromLocalStorage();
+            this.apiService.updateToken(this.token);
             return true;
         }
         return false;
@@ -71,6 +73,17 @@ export default class UserService {
         }
     }
 
+    async updateFirstTimeVisit() {
+        try {
+            const response = await this.apiService.apiCall('PUT', '/api/firstTimeVisit')
+            this.firstTimeVisit = false;
+            localStorage.setItem("firstTimeVisit", JSON.stringify(false));
+            return response;
+        } catch (e) {
+            throw e;
+        }
+    }
+
     setUserInfo(userInfo) {
         this.token = userInfo.token;
         this.firstTimeVisit = userInfo.firstTimeVisit || true;
@@ -82,6 +95,14 @@ export default class UserService {
         localStorage.setItem("token", JSON.stringify(response.token));
         localStorage.setItem("username", JSON.stringify(response.username));
         localStorage.setItem("firstTimeVisit", JSON.stringify(response.firstTimeVisit))
+    }
+
+    getInfoFromLocalStorage() {
+        let userInfo = {}
+        userInfo.token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
+        userInfo.username = localStorage.getItem("username") ? JSON.parse(localStorage.getItem("username")) : null;
+        userInfo.firstTimeVisit = localStorage.getItem("firstTimeVisit") ? JSON.parse(localStorage.getItem("firstTimeVisit")) : null;
+        this.setUserInfo(userInfo);
     }
 
 

@@ -27,8 +27,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    updateHasVisited({commit}) {
-      this.commit('setIsFirstTimeVisit', false);
+    async updateHasVisited({commit}) {
+      try {
+        const response = await userService.updateFirstTimeVisit(true)
+        this.commit('setIsFirstTimeVisit', false);
+      } catch(e) {
+        commit('setError', e);
+        throw e;
+      }
     },
 
     async userLogin({commit}, credentials) {
