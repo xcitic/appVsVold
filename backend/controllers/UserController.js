@@ -55,6 +55,25 @@ const UserController = {
       return jwt.sign({userId: user._id, username: user.username}, privateKey, {expiresIn: '30d'});
   },
 
+  async updateFirstTimeVisit(req, res) {
+      const userId = req.token.userId
+      if (!userId) {
+          res.sendStatus(403, 'Unauthorized');
+      }
+      try {
+        await User.find({_id: userId}, async (err, user) => {
+            if (err) {
+                return res.sendStatus(403, 'Unauthorized');
+            }
+            user.firstTimeVisit = false;
+            await user.update();
+        })
+          res.sendStatus(203, 'Updated');
+      } catch (e) {
+          res.sendStatus(400, e);
+      }
+  }
+
 }
 
 function saveTokenInRedis(user, token) {

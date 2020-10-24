@@ -54,7 +54,7 @@ app.post('/reset-password/:id', (req, res) => {
 });
 
 
-router.use( (req, res, next) => {
+router.use('', (req, res, next) => {
     try {   
         Authentication.verifyToken(req, res, next);
     } catch (e) {
@@ -77,6 +77,14 @@ router.post('/logs', async (req, res, next) => {
         res.status(400).send(e);
     }
 });
+
+router.put('/firstimevisit', async (req, res, next) => {
+    try {
+        await UserController.updateFirstTimeVisit(req, res, next);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+})
 
 app.use('/api', router, (req, res) => {
     res.sendStatus(401);
