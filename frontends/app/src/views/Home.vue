@@ -18,7 +18,7 @@ export default {
   components: {FirstTimeVisit},
   computed: {
     firstTimeVisit() {
-      return this.$store.state.isFirstTimeVisit;
+      return this.$store.state.firstTimeVisit;
     }
   }
 }

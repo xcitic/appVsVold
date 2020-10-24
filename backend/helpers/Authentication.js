@@ -12,7 +12,6 @@ const Authentication = {
 
     verifyToken (req, res, next) {
         const token = req.cookies.token || req.get("Token") || '';
-        console.log('Token: ' + token);
         try {
             if (!token) {
                 return res.status(401).send('Authentication token is missing');

@@ -61,15 +61,15 @@ const UserController = {
           res.sendStatus(403, 'Unauthorized');
       }
       try {
-        await User.find({_id: userId}, async (err, user) => {
-            if (err) {
-                return res.sendStatus(403, 'Unauthorized');
-            }
-            user.firstTimeVisit = false;
-            await user.update();
-        })
-          res.sendStatus(203, 'Updated');
+        const user = await User.findOne({_id: userId});
+        if (!user) {
+            res.sendStatus(401, "Unauthorized");
+        }
+        user.firstTimeVisit = false;
+        await user.save();
+        res.sendStatus(204);
       } catch (e) {
+          console.log(e)
           res.sendStatus(400, e);
       }
   }

@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+  export default {
+    name: "App",
+    async mounted() {
+      await this.$store.dispatch("checkAuthentication");
+    }
+  }
+</script>
+
 <style lang="scss">
 @import './assets/styles.scss';
 

@@ -12,14 +12,8 @@ export default class UserService {
         this.checkIfFirstTimeVisit();
     }
 
-    isUserLoggedIn(){
+    isUserLoggedIn() {
         if (this.isLoggedIn) {
-            return true;
-        }
-        const token = localStorage.getItem("token");
-        if(token) {
-            this.getInfoFromLocalStorage();
-            this.apiService.updateToken(this.token);
             return true;
         }
         return false;
@@ -27,9 +21,14 @@ export default class UserService {
 
 
     checkIfTokenExists() {
-        // check localstorage for token 
-        // if found set the token 
-        // then call setUserName
+        const token = localStorage.getItem("token");
+        if(token) {
+            const userInfo = this.getInfoFromLocalStorage();
+            this.setUserInfo(userInfo);
+            this.apiService.updateToken(this.token);
+            return true;
+        }
+        return false;
     }
 
     setUserName(username = null) {
@@ -53,8 +52,7 @@ export default class UserService {
     async login(credentials) {
         try {
             const response = await this.apiService.apiCall('POST', '/login', credentials);
-            this.setUserInfo(response);
-            this.saveInLocalStorage(response);
+            this.updateUserInfo(response);
             return response;
         } catch (e) {
             throw e;
@@ -64,18 +62,22 @@ export default class UserService {
     async register(credentials) {
         try {
             const response = await this.apiService.apiCall('POST', '/register', credentials);
-            console.log(response)
-            this.setUserInfo(response);
-            this.saveInLocalStorage(response);
+            await this.updateUserInfo(response);
             return response;
         } catch (e) {
             throw e;
         }
     }
 
+    async updateUserInfo(userInfo) {
+        this.setUserInfo(userInfo);
+        this.saveInLocalStorage(userInfo);
+        this.apiService.updateToken(userInfo.token);
+    }
+
     async updateFirstTimeVisit() {
         try {
-            const response = await this.apiService.apiCall('PUT', '/api/firstTimeVisit')
+            const response = await this.apiService.apiCall('PUT', '/api/firstimevisit')
             this.firstTimeVisit = false;
             localStorage.setItem("firstTimeVisit", JSON.stringify(false));
             return response;
@@ -102,7 +104,7 @@ export default class UserService {
         userInfo.token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
         userInfo.username = localStorage.getItem("username") ? JSON.parse(localStorage.getItem("username")) : null;
         userInfo.firstTimeVisit = localStorage.getItem("firstTimeVisit") ? JSON.parse(localStorage.getItem("firstTimeVisit")) : null;
-        this.setUserInfo(userInfo);
+        return userInfo;
     }
 
 
