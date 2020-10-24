@@ -9,7 +9,6 @@ export default class UserService {
     constructor(ApiService) {
         this.apiService = ApiService;
         this.checkIfTokenExists();
-        this.checkIfFirstTimeVisit();
     }
 
     isUserLoggedIn() {
@@ -41,11 +40,6 @@ export default class UserService {
         } else {
 
         }
-    }
-
-    checkIfFirstTimeVisit() {
-        // check localstorage for firstTimeVisit
-        // if found set firstTimeVisit
     }
 
     
@@ -88,7 +82,7 @@ export default class UserService {
 
     setUserInfo(userInfo) {
         this.token = userInfo.token;
-        this.firstTimeVisit = userInfo.firstTimeVisit || true;
+        this.firstTimeVisit = userInfo.firstTimeVisit;
         this.username = userInfo.username; 
         this.isLoggedIn = true;
     }

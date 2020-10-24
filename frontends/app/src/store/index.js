@@ -57,14 +57,12 @@ export default new Vuex.Store({
     },
 
     async checkAuthentication({commit}) {
-      userService.checkIfTokenExists()
       if (userService.isLoggedIn) {
         const userInfo = {
           token: userService.token,
           username: userService.username,
           firstTimeVisit: userService.firstTimeVisit
         }
-        console.log(userInfo)
         commit('setUserInfo', userInfo);
       }
     }
