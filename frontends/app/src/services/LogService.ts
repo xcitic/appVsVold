@@ -1,4 +1,5 @@
 import ApiService from "./ApiService";
+import {Log} from '../types/Log'
 
 export default class LogService {
     apiService: ApiService;

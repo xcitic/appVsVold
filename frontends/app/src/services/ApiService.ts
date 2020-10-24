@@ -3,7 +3,7 @@ import axios, { AxiosInstance, Method } from 'axios';
 export default class ApiService {
     endpoint: string = 'http://localhost:4000';
     axiosConfig: AxiosInstance;
-    token: string;
+    token?: string;
 
     constructor() {
         this.axiosConfig = this.setAxiosConfig();

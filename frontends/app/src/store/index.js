@@ -4,11 +4,12 @@ import {userService, logService} from '../main.js';
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     success: '',
     error: '',
-    isFirstTimeVisit: true,
+    isFirstTimeVisit: false,
+    user: null,
     username: null,
     token: null
   },
@@ -59,6 +60,6 @@ export default new Vuex.Store({
       }
     }
   },
-  modules: {
-  }
 })
+
+export default store;

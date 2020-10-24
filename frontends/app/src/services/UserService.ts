@@ -1,10 +1,12 @@
 import ApiService from "./ApiService";
+import {UserResponse} from '../types/UserResponse';
+import {Credentials} from '../types/Credentials';
 
 export default class UserService {
-    token?: string = null;
+    token?: string | null = null;
     firstTimeVisit?: boolean = true;
-    isLoggedIn?: boolean = false;
-    username?: string = null;
+    isLoggedIn: boolean = false;
+    username?: string | null = null;
     apiService: ApiService;
 
 
@@ -25,15 +27,18 @@ export default class UserService {
     }
 
     getUserInfoFromStorage() {
-       const token: string | null = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
-       const username: string | null = localStorage.getItem("username") ? JSON.parse(localStorage.getItem("username")) : null;
-       const firstTimeVisit: boolean | null = localStorage.getItem("firstTimeVisit") ? JSON.parse(localStorage.getItem("firstTimeVisit")) : false;
-       const userInfo: UserResponse = {
-           token: token,
-           username: username,
-           firstTimeVisit: firstTimeVisit
+       const token: string | null = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+       const username: string | null = localStorage.getItem("username") ? localStorage.getItem("username") : null;
+       const firstTimeVisit: null | boolean | string = localStorage.getItem("firstTimeVisit") ? localStorage.getItem("firstTimeVisit") : false;
+       if (token && username) {
+           this.isLoggedIn = true;
+           const userInfo = {
+            token: token,
+            username: username,
+            firstTimeVisit: !!firstTimeVisit
+        }
+            this.setUserInfo(userInfo);
        }
-       this.setUserInfo(userInfo);
     }
     
     async login(credentials: Credentials): Promise<UserResponse> | never {
@@ -68,7 +73,6 @@ export default class UserService {
         this.token = userInfo.token;
         this.firstTimeVisit = userInfo.firstTimeVisit || true;
         this.username = userInfo.username; 
-        this.isLoggedIn = true;
     }
 
     saveInLocalStorage(userInfo: UserResponse): void {
