@@ -12,10 +12,7 @@ export default class UserService {
     }
 
     isUserLoggedIn() {
-        if (this.isLoggedIn) {
-            return true;
-        }
-        return false;
+        return this.isLoggedIn;
     }
 
 

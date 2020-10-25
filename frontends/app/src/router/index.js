@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
 import Log from '@/views/Log.vue';
+import HelpLine from '@/views/HelpLine.vue';
 
 
 Vue.use(VueRouter)
@@ -38,6 +39,14 @@ const routes = [
     },
     name: 'Log',
     component: Log
+  },
+  {
+    path: '/help-line',
+    meta: {
+      requiresLogin: true
+    },
+    name: 'HelpLine',
+    component: HelpLine
   },
   {
     path: '*',

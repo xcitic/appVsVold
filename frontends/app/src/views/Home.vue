@@ -4,7 +4,13 @@
       <FirstTimeVisit />
     </div>
     
-    Home
+    <div>
+      <button @click="goToLogg">Logg</button>
+    </div>
+
+    <div>
+      <button @click="goToHelpLine">Les mer</button>
+    </div>
 
 
   </div>
@@ -19,6 +25,14 @@ export default {
   computed: {
     firstTimeVisit() {
       return this.$store.state.firstTimeVisit;
+    }
+  },
+  methods: {
+    goToLogg() {
+      this.$router.push({name: "Log"});
+    },
+    goToHelpLine() {
+      this.$router.push({name: "HelpLine"});
     }
   }
 }

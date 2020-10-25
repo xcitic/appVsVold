@@ -1,14 +1,14 @@
 <template>
   <div>
-    <button @click="goBack">Back</button>
-    Log
+      <button @click="goBack">Back</button>
+    HelpLine
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'Log',
+  name: 'HelpLine',
   methods: {
       goBack() {
           this.$router.push({name: "Home"});
