@@ -1,15 +1,16 @@
 <template>
   <div>
+    <NavBar />
     <div v-show="firstTimeVisit">
       <FirstTimeVisit />
     </div>
     
-    <div>
-      <button @click="goToLogg">Logg</button>
+    <div class="log-container">
+      <button class="btn-main" @click="goToLogg">Logg</button>
     </div>
 
-    <div>
-      <button @click="goToHelpLine">Les mer</button>
+    <div class="information-container">
+      <button class="btn-main" @click="goToHelpLine">Les mer</button>
     </div>
 
 
@@ -18,10 +19,11 @@
 
 <script>
 import FirstTimeVisit from '../components/FirstTimeVisit.vue';
+import NavBar from '@/components/NavBar.vue';
 
 export default {
   name: 'Home',
-  components: {FirstTimeVisit},
+  components: {FirstTimeVisit, NavBar},
   computed: {
     firstTimeVisit() {
       return this.$store.state.firstTimeVisit;
@@ -37,3 +39,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .log-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid grey;
+    height: 20vh;
+  }
+</style>
