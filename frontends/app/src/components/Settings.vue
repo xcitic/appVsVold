@@ -8,6 +8,29 @@
                 <svg @click="toggleSettingsBar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="settingsIcon"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 <div class="settingsbar__heading--text">Innstillinger</div>
             </div>
+
+            <div class="settingsbar__list">
+                <div class="settingsbar__section">
+                    <span class="icon"></span>
+                    <p class="text">Min konto</p>
+                </div>
+                <div class="settingsbar__section">
+                    <span class="icon"></span>
+                    <p class="text">Varsler</p>
+                </div>
+                <div class="settingsbar__section">
+                    <span class="icon"></span>
+                    <p class="text">Hjelp</p>
+                </div>
+                 <div class="settingsbar__section">
+                    <span class="icon"></span>
+                    <p class="text">Språk</p>
+                </div>
+                 <div class="settingsbar__section" @click="logout">
+                    <span class="icon"></span>
+                    <p class="text">Logg ut</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -24,6 +47,10 @@ export default {
     methods: {
         toggleSettingsBar() {
             this.isSettingsOpen = !this.isSettingsOpen;
+        },
+        async logout() {
+            await this.$store.dispatch("userLogout");
+            this.$router.push({name: "Login"})
         }
     }
 }
@@ -41,12 +68,13 @@ export default {
     }
     .settingsDropDown {
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
         margin-bottom: 1rem;
         position: absolute;
         z-index: 20;
         width: 50vw;
-        height: 30vh;
+        height: auto;
         border: 1px solid grey;
         background-color: white;
     }
@@ -64,4 +92,20 @@ export default {
             font-size: 2rem;
         }
     }
+
+    .settingsbar__list {
+        display: flex;
+        flex-direction: column;
+        .settingsbar__section {
+                border: 1px solid grey;
+                margin: 1rem;
+
+                
+                .text {
+                    font-weight: 600;
+                }
+        }
+    }
+
+    
 </style>

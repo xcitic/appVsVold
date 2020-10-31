@@ -98,5 +98,13 @@ export default class UserService {
         return userInfo;
     }
 
+    async logout() {
+        localStorage.clear();
+        this.token = null;
+        this.isLoggedIn = false;
+        this.username = null;
+        this.apiService.updateToken(null);
+    }
+
 
 }

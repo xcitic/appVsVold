@@ -24,6 +24,12 @@ export default new Vuex.Store({
       state.firstTimeVisit = userInfo.firstTimeVisit;
       state.username = userInfo.username;
       state.token = userInfo.token;
+    },
+
+    clearUserInfo(state) {
+      state.username = null
+      state.token = null;
+      state.firstTimeVisit = true;
     }
   },
   actions: {
@@ -45,6 +51,11 @@ export default new Vuex.Store({
         commit('setError', e);
         throw e;
       }
+    },
+
+    async userLogout({commit}) {
+      await userService.logout();
+      commit('clearUserInfo');
     },
 
     async userRegister({commit}, credentials) {

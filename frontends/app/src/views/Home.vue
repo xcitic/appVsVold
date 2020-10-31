@@ -6,7 +6,9 @@
     </div>
     
     <div class="log-container">
-      <button class="btn-main" @click="goToLogg">Logg</button>
+      <div class="log-button-main">
+        <button class="btn-main" @click="goToLogg">Logg</button>
+      </div>
     </div>
 
     <div class="information-container">
@@ -47,5 +49,9 @@ export default {
     align-items: center;
     border: 1px solid grey;
     height: 20vh;
+
+    .log-button-main {
+      flex: 0 0 auto;
+    }
   }
 </style>
