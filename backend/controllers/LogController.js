@@ -27,13 +27,21 @@ const LogController = {
             const userInput = req.body;
             const log = new Log({
                 user: userId,
+                title: userInput.title,
                 description: userInput.description,
                 files: userInput.files,
                 location: userInput.location,
                 date: userInput.date
             });
             await log.save();
-            res.sendStatus(201, 'Log created');
+            const response = {
+                title: log.title,
+                description: log.description,
+                files: log.files,
+                date: log.date,
+                location: log.location
+            }
+            res.status(201).send(response);
         } catch (err) {
             res.sendStatus(400, `Error ${err.message}`);
         }

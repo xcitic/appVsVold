@@ -4,6 +4,9 @@ const LogSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  title: {
+      type: String
+  },
   description: {
       type: String
   },

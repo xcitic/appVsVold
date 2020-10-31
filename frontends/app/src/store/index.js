@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {userService} from '../main.js';
+import {userService, logService} from '../main.js';
 
 Vue.use(Vuex)
 
@@ -10,7 +10,8 @@ export default new Vuex.Store({
     error: '',
     firstTimeVisit: true,
     username: null,
-    token: null
+    token: null,
+    logs: []
   },
   mutations: {
     setError(state, msg) {
@@ -30,6 +31,14 @@ export default new Vuex.Store({
       state.username = null
       state.token = null;
       state.firstTimeVisit = true;
+    },
+
+    setAllLogs(state, logs) {
+      state.logs = [...logs];
+    },
+
+    addLog(state, newLog) {
+      state.logs = [...state.logs, newLog];
     }
   },
   actions: {
@@ -75,6 +84,24 @@ export default new Vuex.Store({
           firstTimeVisit: userService.firstTimeVisit
         }
         commit('setUserInfo', userInfo);
+      }
+    },
+
+    async saveLog({commit}, payload) {
+      try {
+        const newLog = await logService.saveLog(payload);
+        commit('addLog', newLog);
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    async getAllLogs({commit}) {
+      try {
+        const logs = await logService.getAllLogs();
+        commit('setAllLogs', logs);
+      } catch (e) {
+        throw e;
       }
     }
   },
