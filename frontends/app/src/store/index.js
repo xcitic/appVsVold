@@ -38,7 +38,7 @@ export default new Vuex.Store({
     },
 
     addLog(state, newLog) {
-      state.logs = [...state.logs, newLog];
+      state.logs = [newLog, ...state.logs];
     }
   },
   actions: {

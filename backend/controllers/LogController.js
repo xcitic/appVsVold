@@ -1,5 +1,4 @@
 import Log from '../db/models/Log.js';
-import Authentication from '../helpers/Authentication.js';
 
 const LogController = {
 
@@ -10,12 +9,23 @@ const LogController = {
             res.sendStatus(403, "Unauthorized");
         }
 
-        await Log.find({user: userId}, (err, logs) => {
+        await Log.find({user: userId}, null, {sort: {createdAt: 'desc'}}, (err, logs) => {
             if (err) {
-                return res.send(err.message);
+                return res.status(500).send(err.message);
             }
 
-            res.send(logs)
+            if (logs.length == 0) {
+                res.send([])
+            }
+
+            let response = [];
+
+            for (let i = 0; i < logs.length; i++) {
+                const formattedPayload = LogController.reduceLogDocument(logs[i]);
+                response.push(formattedPayload);
+            }
+
+            res.send(response)
         });
     },
 
@@ -51,6 +61,16 @@ const LogController = {
     ignoreLog(req, res) {
 
     },
+
+    reduceLogDocument(log) {
+        return {
+            title: log.title || '',
+            description: log.description || '',
+            date: log.date || '',
+            files: log.files || [],
+            location: log.location || ''
+        }
+    }
 
 
 

@@ -12,22 +12,14 @@
 <script>
 export default {
     name: "LogList",
-    data() {
-        return {
-            previousLogs: [
-                {
-                    date: new Date(),
-                    title: 'Log title 1'
-                },
-                {
-                    date: new Date(),
-                    title: 'Log title 2, Log title 2'
-                },
-                {
-                    date: new Date(),
-                    title: 'Log title 3'
-                },
-            ]
+    mounted() {
+        if (this.previousLogs.length == 0) {
+            this.$store.dispatch('getAllLogs');
+        }
+    },
+    computed: {
+        previousLogs() {
+            return this.$store.state.logs
         }
     },
     methods: {
