@@ -100,7 +100,6 @@ export default {
                 border: 1px solid grey;
                 margin: 1rem;
 
-                
                 .text {
                     font-weight: 600;
                 }

@@ -7,7 +7,7 @@
     <form class="login-form">
       <input type="text" name="username" v-model="username" placeholder="Brukernavn"/>
       <input type="password" name="password" v-model="password" placeholder="Passord" />
-      <button class="btn-main" type="submit" @click.prevent="submitForm">
+      <button class="btn-main" type="submit" @click.prevent="submitForm" :disabled="hasBeenSubmitted">
         Logg inn
       </button>
     </form>
@@ -25,10 +25,12 @@ export default {
     return {
       username: '',
       password: '',
+      hasBeenSubmitted: false
     }
   },
   methods: {
     async submitForm() {
+      this.hasBeenSubmitted = true;
       const credentials = {
         username: this.username,
         password: this.password
@@ -38,6 +40,7 @@ export default {
         this.$router.push({name: 'Home'});
       } catch (e) {
         alert(e);
+        this.hasBeenSubmitted = false;
       }
     }
   }
@@ -45,14 +48,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles.scss';
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    font-size: 1.4rem;
-  }
   .logo {
     flex: auto;
   }
@@ -66,13 +61,12 @@ export default {
 
     input {
       margin-top: 1rem;
-      padding: .15rem .15rem;
+      padding: .5rem .2rem .5rem 1rem;
       font-size: 1.4rem;
-
     }
   }
   .register{
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
   
 </style>

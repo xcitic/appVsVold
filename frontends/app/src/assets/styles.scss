@@ -8,20 +8,39 @@ $color-secondary: #3F51B5;
 
 html {
     font-size: 62.5%;
+    margin: 0px;
 }
 
 
 .btn-main {
-    flex: 1 1 75%;
+    flex: 0 auto;
     margin: 1rem 2rem;
-    padding: 0.25rem 1rem;
+    padding: 1rem 2rem;
     background-color: $color-main;
     color: white;
-    border-radius: .2rem;
+    border-radius: .5rem;
     border: none;
 
     &:active,
     &:focus {
         box-shadow: 0 0 0 .15rem $color-secondary;
     }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.4rem;
+    margin: 5%;
+}
+
+
+.border-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid grey;
+    border-radius: .25rem;
 }

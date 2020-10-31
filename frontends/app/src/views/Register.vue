@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="heading">
+    <div class="border-container heading">
       Lag ny bruker
     </div> 
     <form class="register-form">
@@ -8,7 +8,7 @@
       <input type="password" v-model="password" placeholder="Passord" />
       <input type="password-repeat" placeholder="Gjenta passord" />
 
-      <button class="btn-main" @click.prevent="submitForm">Lag ny bruker</button>
+      <button class="btn-main" @click.prevent="submitForm" :disabled="hasBeenSubmitted">Lag ny bruker</button>
     </form>
   </div>
 </template>
@@ -20,11 +20,13 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      hasBeenSubmitted: false
     }
   },
   methods: {
     async submitForm() {
+      this.hasBeenSubmitted = true;
       const payload = {
         username: this.username,
         password: this.password
@@ -34,6 +36,7 @@ export default {
         this.$router.push({name: "Home"});
       } catch (e) {
         alert(e);
+        this.hasBeenSubmitted = false;
       }
     }
   }
@@ -41,16 +44,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles.scss';
 
-  .container {
-    display: flex;
-    flex-direction: column;
+  .heading {
+    width: 20vw;
+    height: 5rem;
+    margin-bottom: 1rem;
   }
 
   .register-form {
     flex: auto;
     display: flex;
     flex-direction: column;
+
+    input {
+      margin-top: 1rem;
+      padding: .5rem .15rem;
+      font-size: 1.4rem;
+    }
   }
 </style>
