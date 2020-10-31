@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div v-if="mainPage">Settings</div>
+    <div class="navbar">
+        <Settings v-if="mainPage"></Settings>
         <div v-else @click="goBack">GoBack</div>
     </div>
 </template>
@@ -23,4 +23,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .navbar {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 1rem;
+    }
+</style>
     
