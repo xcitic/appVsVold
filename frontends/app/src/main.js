@@ -6,12 +6,14 @@ import './registerServiceWorker';
 import UserService from './services/UserService.js';
 import ApiService from './services/ApiService.js';
 import LogService from './services/LogService.js';
+import FileService from './services/FileService.js';
 require('./plugins.js');
 
 
 const apiService = new ApiService();
 export const userService = new UserService(apiService);
 export const logService = new LogService(apiService);
+export const fileService = new FileService(apiService);
 
 Vue.prototype.$userService = userService;
 Vue.prototype.$apiService = apiService;

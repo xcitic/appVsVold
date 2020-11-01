@@ -3,18 +3,28 @@
         <div class="border-container create-log">
             <input type="text" class="title" v-model="title" placeholder="Tittel">
             <textarea name="description" v-model="description" cols="30" rows="10" placeholder="Beskriv hendelsen" class="description"></textarea>
-            <Datetime 
-                type="datetime" 
-                v-model="date"
-                placeholder="Velg dato og tidspunkt"
-                zone="Europe/Oslo"
-                :phrases="datePicker.buttons"
-            ></Datetime>
             
             <div class="add-items-container">
+            
+                <Datetime 
+                    type="datetime" 
+                    v-model="date"
+                    placeholder="Velg dato og tidspunkt"
+                    zone="Europe/Oslo"
+                    :phrases="datePicker.buttons"
+                    input-style="flex: 1; padding: 1rem; margin-right: 1.5rem;"
+                ></Datetime>
+
                 <div class="add-items-button">
-                    Legg til en fil
+                    Velg sted
                 </div>
+
+            </div>
+            
+            <div class="add-items-container">
+                <label for="addFiles" class="add-items-button">Legg til filer</label>
+                <input type="file" id="addFiles" style="display: none;" @change="addFiles" multiple >
+                    
                 <div class="add-items-button">
                     Spørreskjema
                 </div>
@@ -31,6 +41,7 @@
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css';
 import { Settings } from 'luxon';
+import {fileService} from '@/main.js';
 
 Settings.defaultLocale = 'nb-NO'
 
@@ -47,11 +58,31 @@ export default {
             hasBeenSubmitted: false,
             datePicker: {
                 buttons: {ok: 'Velg', cancel: 'Avbryt'},
-            }
+            },
+            uploadingFiles: false
         }
     },
 
     methods: {
+        async addFiles(e) {
+            const files = e.target.files || e.dataTransfer.files;
+            if (files.length > 0) {
+                await this.uploadFiles(files)
+            }
+        },
+        async uploadFiles(files) {
+            this.uploadingFiles = true;
+            try {
+                const uploadedFiles = await fileService.uploadFiles(files);
+                // for each file get aws link to post the file 
+                // on complete add the filelink to the fileobject {name, url, fileType} 
+                // push fileobject to files array
+                // set is uploading files false
+            } catch (e) {
+                this.$toasted.error('Noe gikk galt med filopplastingen. Prøv igjen.')
+
+            }
+        },
         async saveLog() {
             this.hasBeenSubmitted = true;
             const payload = {
@@ -102,6 +133,7 @@ export default {
         width: 75%;
         display: flex;
         flex-direction: row;
+        margin-bottom: 1rem;
        
 
         .add-items-button {
