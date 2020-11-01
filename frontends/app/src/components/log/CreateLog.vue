@@ -3,6 +3,13 @@
         <div class="border-container create-log">
             <input type="text" class="title" v-model="title" placeholder="Tittel">
             <textarea name="description" v-model="description" cols="30" rows="10" placeholder="Beskriv hendelsen" class="description"></textarea>
+            <Datetime 
+                type="datetime" 
+                v-model="date"
+                placeholder="Velg dato og tidspunkt"
+                zone="Europe/Oslo"
+                :phrases="datePicker.buttons"
+            ></Datetime>
             
             <div class="add-items-container">
                 <div class="add-items-button">
@@ -21,16 +28,26 @@
     </div>
 </template>
 <script>
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css';
+import { Settings } from 'luxon';
+
+Settings.defaultLocale = 'nb-NO'
+
 export default {
     name: "CreateLog",
+    components: {Datetime},
     data() {
         return {
             title: '',
             description: '',
             files: [],
             questionair: null,
-            date: new Date(),
-            hasBeenSubmitted: false
+            date: null,
+            hasBeenSubmitted: false,
+            datePicker: {
+                buttons: {ok: 'Velg', cancel: 'Avbryt'},
+            }
         }
     },
 
@@ -56,7 +73,7 @@ export default {
             this.title = '';
             this.description = '';
             this.questionair = null;
-            this.date = new Date();
+            this.date = null;
             this.hasBeenSubmitted = false
         },
     }
