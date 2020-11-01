@@ -39,7 +39,7 @@ export default {
         await this.$store.dispatch('userLogin', credentials);
         this.$router.push({name: 'Home'});
       } catch (e) {
-        alert(e);
+        this.$toasted.error('Feil brukernavn eller passord');
         this.hasBeenSubmitted = false;
       }
     }

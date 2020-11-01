@@ -45,10 +45,20 @@ export default {
             }
             try {
                 this.$store.dispatch("saveLog", payload);
+                this.$toasted.success("Logføring lagret");
+                this.resetForm();
             } catch (err) {
-                alert(err.message);
+                this.$toasted.error('Noe gikk galt. Prøv igjen.');
             }
-        }
+        },
+
+        resetForm() {
+            this.title = '';
+            this.description = '';
+            this.questionair = null;
+            this.date = new Date();
+            this.hasBeenSubmitted = false
+        },
     }
 }
 </script>

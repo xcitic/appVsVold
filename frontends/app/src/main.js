@@ -6,6 +6,7 @@ import './registerServiceWorker';
 import UserService from './services/UserService.js';
 import ApiService from './services/ApiService.js';
 import LogService from './services/LogService.js';
+require('./plugins.js');
 
 
 const apiService = new ApiService();
