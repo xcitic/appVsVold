@@ -74,17 +74,20 @@ export default {
             this.uploadingFiles = true;
             try {
                 const uploadedFiles = await fileService.uploadFiles(files);
-                // for each file get aws link to post the file 
-                // on complete add the filelink to the fileobject {name, url, fileType} 
-                // push fileobject to files array
-                // set is uploading files false
+                this.files = [...this.files, ...uploadedFiles];
+                this.uploadingFiles = false;
             } catch (e) {
                 this.$toasted.error('Noe gikk galt med filopplastingen. Prøv igjen.')
-
             }
         },
         async saveLog() {
             this.hasBeenSubmitted = true;
+            if (this.uploadingFiles) {
+                this.$toasted.info("Laster fortsatt opp filer. Prøver automatisk å lagre logg igjen om noen sekunder.");
+                setTimeout(() => {
+                    this.saveLog();
+                }, 5000);
+            }
             const payload = {
                 title: this.title,
                 description: this.description,
@@ -93,7 +96,7 @@ export default {
             }
             try {
                 this.$store.dispatch("saveLog", payload);
-                this.$toasted.success("Logføring lagret");
+                this.$toasted.success("Logføring lagret.");
                 this.resetForm();
             } catch (err) {
                 this.$toasted.error('Noe gikk galt. Prøv igjen.');
@@ -110,7 +113,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
     .create-log {
         padding-top: 2rem;
         padding-bottom: 2rem;

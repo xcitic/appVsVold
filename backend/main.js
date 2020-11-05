@@ -5,7 +5,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 
 import connectDB from './db/init.js';
-import {UserController, LogController} from './controllers/index.js';
+import {UserController, LogController, FileController} from './controllers/index.js';
 import Authentication from './helpers/Authentication.js';
 
 const app = express();
@@ -83,6 +83,22 @@ router.put('/firstimevisit', async (req, res, next) => {
         await UserController.updateFirstTimeVisit(req, res, next);
     } catch (e) {
         res.status(400).send(e);
+    }
+})
+
+router.post('/signed-url', async (req, res) => {
+    try {
+        await FileController.getSignedUrl(req, res);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+})
+
+router.get('/file/:logId/:fileId', async (req, res) => {
+    try {
+        await FileController.getFileFromBucket(req, res);
+    } catch (e) {
+        res.status(500).send(e);
     }
 })
 

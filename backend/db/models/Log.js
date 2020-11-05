@@ -33,7 +33,13 @@ const LogSchema = mongoose.Schema({
   },
   date: {
       type: String
-  }
+  },
+  comments: [
+      {
+          comment: {type: String},
+          date: {type: String}
+      }
+  ]
 }, {
   timestamps: true
 });

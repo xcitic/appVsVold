@@ -64,12 +64,28 @@ const LogController = {
 
     reduceLogDocument(log) {
         return {
+            id: log._id || '',
             title: log.title || '',
             description: log.description || '',
             date: log.date || '',
-            files: log.files || [],
+            files: LogController.reduceFileDocument(log.files) || [],
             location: log.location || ''
         }
+    },
+
+    reduceFileDocument(files) {
+        if (files.length == 0) {
+            return []
+        }
+        let reduced = []
+        for(let file of files) {
+            reduced.push({
+                id: file._id,
+                fileType: file.fileType,
+                name: file.name
+            })
+        }
+        return reduced;
     }
 
 
