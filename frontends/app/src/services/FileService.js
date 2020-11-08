@@ -15,8 +15,10 @@ export default class FileService {
             try {
                 const signedUrl = await this.apiService.apiCall('POST', `/api/signed-url`, {fileName: file.name, fileType: file.type});
                 const response = await this.uploadFileToAWS(file, signedUrl);
+                let fileName = response.data.name.split('-_-');
+                fileName = fileName[0];
                 const storedFile = {
-                    name: response.data.name,
+                    name: response.data.fileName,
                     url: response.url,
                     fileType: response.data.type
                 }
