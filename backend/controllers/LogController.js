@@ -62,6 +62,37 @@ const LogController = {
 
     },
 
+    async userHasAccessToFile(userId, logId, fileId) {
+        const allUserLogs = await Log.find({user: userId});
+        if (allUserLogs.length === 0) {
+            return false;
+        }
+
+        const log = allUserLogs.find(log => {
+            return log._id == logId;
+        });
+
+        if (log == null) {
+            return false;
+        }
+
+        if (log.files && log.files.length > 0) {
+            const foundFile = log.files.find(file => {
+                return file._id == fileId;
+            });
+
+            if (foundFile) {
+                return true;
+            }
+
+        } else {
+            return false;
+        }
+
+        return false;
+
+    },
+
     reduceLogDocument(log) {
         return {
             id: log._id || '',
@@ -86,7 +117,7 @@ const LogController = {
             })
         }
         return reduced;
-    }
+    },
 
 
 

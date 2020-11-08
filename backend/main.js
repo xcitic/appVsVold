@@ -13,6 +13,8 @@ const port = 4000;
 
 const router = express.Router();
 
+const fileController = new FileController();
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -88,7 +90,7 @@ router.put('/firstimevisit', async (req, res, next) => {
 
 router.post('/signed-url', async (req, res) => {
     try {
-        await FileController.getSignedUrl(req, res);
+        await fileController.getSignedUrl(req, res);
     } catch (e) {
         res.status(500).send(e);
     }
@@ -96,7 +98,7 @@ router.post('/signed-url', async (req, res) => {
 
 router.get('/file/:logId/:fileId', async (req, res) => {
     try {
-        await FileController.getFileFromBucket(req, res);
+        await fileController.getFileFromBucket(req, res);
     } catch (e) {
         res.status(500).send(e);
     }
