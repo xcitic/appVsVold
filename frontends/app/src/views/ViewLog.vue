@@ -52,7 +52,7 @@ export default {
                 // tag.style.display = "none";
                 document.body.appendChild(tag);
                 tag.style.display = "none";
-                const blob = new Blob([downloadedFile.file], {type: "application/octet-stream"});
+                const blob = new Blob([downloadedFile.file], {type: downloadedFile.type});
                 const url = window.URL.createObjectURL(blob);
                 tag.href = url;
                 tag.download = "name.pdf";
