@@ -58,6 +58,12 @@ export default {
                 tag.download = "name.pdf";
                 tag.click();
 
+                setTimeout(() => {
+                  window.URL.revokeObjectURL(tag.href);
+                  document.body.removeChild(tag);
+                }, 500);
+
+
                 // const reader = new FileReader();
                 // reader.readAsDataURL(blob);
 
@@ -66,8 +72,7 @@ export default {
                 //     tag.click()
                 // }
                 
-                // window.URL.revokeObjectURL(tag.href);
-                // document.body.removeChild(tag);
+
             } catch (e) {
                 this.$toasted.error("Klarte ikke å laste ned filen. Prøv igjen");
             }
