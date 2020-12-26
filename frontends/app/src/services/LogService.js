@@ -22,4 +22,13 @@ export default class LogService {
             throw e;
         }
     }
+
+    async getOneLog(id) {
+        try {
+            const log = await this.apiService.apiCall('GET', `/api/logs/${id}`);
+            return log;
+        } catch (e) {
+            throw e;
+        }
+    }
 }

@@ -29,6 +29,23 @@ const LogController = {
         });
     },
 
+    async getLogById(req, res) {
+        const userId = req.token.userId
+        const logId = req.params.logId;
+
+        if (!userId) {
+            res.sendStatus(403, "Unauthorized");
+        }
+
+        await Log.findOne({user: userId, _id: logId}, (err, log) => {
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+            const formattedResponse = LogController.reduceLogDocument(log);
+            res.send(formattedResponse);
+        });
+    },
+
 
     async storeLog(req, res) {
         const userId = req.token.userId
@@ -82,7 +99,7 @@ const LogController = {
             });
 
             if (foundFile) {
-                return true;
+                return foundFile;
             }
 
         } else {

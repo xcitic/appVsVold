@@ -42,7 +42,7 @@ const routes = [
     component: Log
   },
   {
-    path: '/log/view',
+    path: '/log/view/:id',
     meta: {
       requiresLogin: true
     },

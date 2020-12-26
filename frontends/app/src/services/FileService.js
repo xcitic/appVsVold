@@ -13,12 +13,10 @@ export default class FileService {
 
         for(let file of files) {
             try {
-                const signedUrl = await this.apiService.apiCall('POST', `/api/signed-url`, {fileName: file.name, fileType: file.type});
-                const response = await this.uploadFileToAWS(file, signedUrl);
-                let fileName = response.data.name.split('-_-');
-                fileName = fileName[0];
+                const signedUrlAndName = await this.apiService.apiCall('POST', `/api/signed-url`, {fileName: file.name, fileType: file.type});
+                const response = await this.uploadFileToAWS(file, signedUrlAndName.signedUrl);
                 const storedFile = {
-                    name: response.data.fileName,
+                    name: signedUrlAndName.fileName,
                     url: response.url,
                     fileType: response.data.type
                 }
@@ -49,9 +47,8 @@ export default class FileService {
 
     async getFileFromAWS(logId, fileId) {
         try {
-            const response = await this.apiService.apiCall('GET', `/api/file/${logId}/${fileId}`);
-            const file = new File(response.file.data, 'filename', {type: response.type});
-            return {file: response.file.data, type: response.type};
+            const fileUrl = await this.apiService.apiCall('GET', `/api/file/${logId}/${fileId}`);
+            return fileUrl;
         } catch (e) {
             throw e;
         }

@@ -64,6 +64,14 @@ router.use('', (req, res, next) => {
     }
 });
 
+router.get('/logs/:logId', async (req, res, next) => {
+    try {
+        await LogController.getLogById(req, res);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 router.get('/logs', async (req, res, next) => {
     try {
         await LogController.getAllLogsForUser(req, res);

@@ -38,7 +38,11 @@ class FileController {
             if (err) {
                 return res.status(500).send('Could not upload file. Try again.');
             } else {
-                return res.status(200).send(data);
+                const payload = {
+                    signedUrl: data,
+                    fileName: fileName
+                }
+                return res.status(200).send(payload);
             }
         });
     }
@@ -49,23 +53,33 @@ class FileController {
         const fileId = req.params.fileId;
 
         const userHasAccessToFile = await LogController.userHasAccessToFile(userId, logId, fileId);
-        if (userHasAccessToFile !== true) {
+        if (userHasAccessToFile === false) {
             return req.status(401).send('You do not have access to the file.');
         }
 
         const params = {
             Bucket: 'appvsvold',
-            Key: 'uniquefilename'
+            Key: userHasAccessToFile.name,
+            Expires: 60 * 5
         };
 
-        await this.client.getObject(params, (err, data) => {
+        await this.client.getSignedUrl('getObject', params, (err, url) => {
             if (err) {
                 return res.status(404).send('File not found');
             } else {
-                const binaryFile = data.Body.toString('utf-8');
-                return res.status(200).send({file: binaryFile, type: response.ContentType});
+                return res.status(200).send(url);
             }
-        });
+        })
+
+
+        // await this.client.getObject(params, (err, data) => {
+        //     if (err) {
+        //         return res.status(404).send('File not found');
+        //     } else {
+        //         const dataString = data.Body.toString('UTF-8')
+        //         return res.status(200).send({file: dataString, type: data.ContentType});
+        //     }
+        // });
     }
 }
 

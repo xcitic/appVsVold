@@ -102,7 +102,6 @@ export default {
                 this.$toasted.error('Noe gikk galt. Prøv igjen.');
             }
         },
-
         resetForm() {
             this.title = '';
             this.description = '';

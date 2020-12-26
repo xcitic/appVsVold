@@ -3,7 +3,7 @@
         <p class="heading">
             Liste over loggføringer 
         </p>
-        <div class="logitem" v-for="(log, index) in previousLogs" :key="index" @click="openLog(index)">
+        <div class="logitem" v-for="(log, index) in previousLogs" :key="index" @click="openLog(log)">
             <p class="date">Dato: {{ log.date }}</p>
             <p class="title">{{ log.title }}</p>
         </div>
@@ -23,8 +23,9 @@ export default {
         }
     },
     methods: {
-        openLog(index) {
-            this.$router.push({name: 'ViewLog', params: {log: this.previousLogs[index]}});
+        async openLog(log) {
+            await this.$store.dispatch('setViewingLog', log);
+            this.$router.push({name: 'ViewLog', params: {id: log.id}});
         }
     }
 }

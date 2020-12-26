@@ -11,7 +11,8 @@ export default new Vuex.Store({
     firstTimeVisit: true,
     username: null,
     token: null,
-    logs: []
+    logs: [],
+    viewingLog: null,
   },
   mutations: {
     setError(state, msg) {
@@ -39,6 +40,10 @@ export default new Vuex.Store({
 
     addLog(state, newLog) {
       state.logs = [newLog, ...state.logs];
+    },
+
+    setViewingLog(state, log) {
+      state.viewingLog = log;
     }
   },
   actions: {
@@ -100,6 +105,19 @@ export default new Vuex.Store({
       try {
         const logs = await logService.getAllLogs();
         commit('setAllLogs', logs);
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    async setViewingLog({commit}, log) {
+      commit('setViewingLog', log);
+    },
+
+    async getOneLog({commit}, logId) {
+      try {
+        const log = await logService.getOneLog(logId);
+        commit('setViewingLog', log);
       } catch (e) {
         throw e;
       }
