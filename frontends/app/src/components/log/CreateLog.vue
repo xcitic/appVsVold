@@ -15,19 +15,13 @@
                     input-style="flex: 1; padding: 1rem; margin-right: 1.5rem;"
                 ></Datetime>
 
-                <div class="add-items-button">
-                    Velg sted
-                </div>
+                <input type="text" class="add-items-button" placeholder="Skriv inn sted">
 
             </div>
             
             <div class="add-items-container">
                 <label for="addFiles" class="add-items-button">Legg til filer</label>
                 <input type="file" id="addFiles" style="display: none;" @change="addFiles" multiple >
-                    
-                <div class="add-items-button">
-                    Spørreskjema
-                </div>
             </div>
 
             <button class="btn-main save-log" @click="saveLog" :disabled="hasBeenSubmitted">
@@ -62,6 +56,11 @@ export default {
             uploadingFiles: false
         }
     },
+    computed: {
+        formHasBeenFilled() {
+            return !!(this.title && this.date && this.description);
+        }
+    },
 
     methods: {
         async addFiles(e) {
@@ -81,10 +80,14 @@ export default {
             }
         },
         async saveLog() {
+            if (!this.formHasBeenFilled) {
+                this.$toasted.info('Fyll ut skjemaet før du lagrer.');
+                return;
+            }
             this.hasBeenSubmitted = true;
             if (this.uploadingFiles) {
                 this.$toasted.info("Laster fortsatt opp filer. Prøver automatisk å lagre logg igjen om noen sekunder.");
-                setTimeout(() => {
+                await setTimeout(() => {
                     this.saveLog();
                 }, 5000);
             }
@@ -95,9 +98,10 @@ export default {
                 date: this.date
             }
             try {
-                this.$store.dispatch("saveLog", payload);
+                await this.$store.dispatch("saveLog", payload);
                 this.$toasted.success("Logføring lagret.");
                 this.resetForm();
+                await this.$store.dispatch("getAllLogs");
             } catch (err) {
                 this.$toasted.error('Noe gikk galt. Prøv igjen.');
             }
@@ -133,6 +137,7 @@ export default {
 
     .add-items-container {
         width: 75%;
+        max-width: 75%;
         display: flex;
         flex-direction: row;
         margin-bottom: 1rem;
@@ -144,8 +149,8 @@ export default {
             padding: 1rem;
             cursor: pointer;
         
-            &:first-child {
-                margin-right: 1.5rem;
+            &:last-child {
+                margin-left: 1.5rem;
             }
         }
     }

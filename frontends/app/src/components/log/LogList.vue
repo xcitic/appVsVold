@@ -4,7 +4,7 @@
             Liste over loggføringer 
         </p>
         <div class="logitem" v-for="(log, index) in previousLogs" :key="index" @click="openLog(log)">
-            <p class="date">Dato: {{ log.date }}</p>
+            <p class="date">Dato: {{ new Date(log.date).toLocaleDateString() }}</p>
             <p class="title">{{ log.title }}</p>
         </div>
     </div>

@@ -4,15 +4,11 @@
         <div class="border-container create-log" v-if="!isLoading">
             <input type="text" class="title" v-model="log.title" placeholder="Tittel" disabled>
             <textarea name="description" v-model="log.description" cols="30" rows="10" placeholder="Beskriv hendelsen" class="description" disabled></textarea>
-            <textarea name="description" v-model="comment" cols="30" rows="10" placeholder="legg til en kommentar til loggføringen" class="description"></textarea>
             <div class="viewlog__footer">
                 <div class="files">
                     <p>Filer:</p>
                     <p class="uploadedFile" v-for="(file, index) in log.files" :key="index" @click="downloadFile(file.id, file.name)">{{`File ${index+1}: ${file.name}`}}</p>
                     
-                </div>
-                <div class="btn-main save-log" @click="saveComment" :disabled="hasBeenSubmitted">
-                    Lagre
                 </div>
             </div>
         </div>
@@ -47,7 +43,6 @@ export default {
     methods: {
         async saveComment() {
             this.hasBeenSubmitted = true;
-            console.log(this.comment);
             this.hasBeenSubmitted = false;
         },
         async downloadFile(fileId, fileName) {
