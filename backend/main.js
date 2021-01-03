@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -7,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './db/init.js';
 import {UserController, LogController, FileController} from './controllers/index.js';
 import Authentication from './helpers/Authentication.js';
+
 
 const app = express();
 const port = 4000;
@@ -41,15 +43,15 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/reset-password', (req, res) => {
-    // find user 
+    // find user
     // generate a token that has short expiration and save it to the db
     // send email to user with the link to reset password
 });
 
 app.post('/reset-password/:id', (req, res) => {
-    // get the token from the :id field 
-    // find a user where the token exists 
-    // check that the token has not expired 
+    // get the token from the :id field
+    // find a user where the token exists
+    // check that the token has not expired
     // use the req.body.password to set the new password
     // update db and log user in
     // send token back to user
@@ -57,7 +59,7 @@ app.post('/reset-password/:id', (req, res) => {
 
 
 router.use('', (req, res, next) => {
-    try {   
+    try {
         Authentication.verifyToken(req, res, next);
     } catch (e) {
         res.status(401).send(e.message);

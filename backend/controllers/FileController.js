@@ -11,15 +11,15 @@ class FileController {
 
     setClient() {
         AWS.config.update({
-            accessKeyId: 'AKIA52DSTMGNJSM5MHY7',
-            secretAccessKey: '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',
-            region: 'eu-north-1',
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION,
             signatureVersion: 'v4'
         });
         const options = {
             signatureVersion: 'v4',
-            region: 'eu-north-1',
-            endpoint: new AWS.Endpoint('s3.eu-north-1.amazonaws.com')
+            region: process.env.AWS_REGION,
+            endpoint: new AWS.Endpoint(`s3.${process.env.AWS_REGION}.amazonaws.com`)
         };
         this.client = new AWS.S3(options);
     }
@@ -28,7 +28,7 @@ class FileController {
         const fileType = req.body.fileType;
         const fileName = req.body.fileName.trim().split('.').join('') + '-_-' + uuidv4();
         const params = {
-            Bucket: 'appvsvold',
+            Bucket: process.env.AWS_BUCKET,
             Key: fileName,
             Expires: 10 * 60,
             ContentType: fileType
@@ -58,7 +58,7 @@ class FileController {
         }
 
         const params = {
-            Bucket: 'appvsvold',
+            Bucket: process.env.AWS_BUCKET,
             Key: userHasAccessToFile.name,
             Expires: 60 * 5
         };
@@ -70,16 +70,6 @@ class FileController {
                 return res.status(200).send(url);
             }
         })
-
-
-        // await this.client.getObject(params, (err, data) => {
-        //     if (err) {
-        //         return res.status(404).send('File not found');
-        //     } else {
-        //         const dataString = data.Body.toString('UTF-8')
-        //         return res.status(200).send({file: dataString, type: data.ContentType});
-        //     }
-        // });
     }
 }
 
