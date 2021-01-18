@@ -12,7 +12,7 @@ import Authentication from './helpers/Authentication.js';
 
 
 const app = express();
-const port = 4000;
+const port = process.env.NODE_PORT;
 
 const router = express.Router();
 
@@ -127,5 +127,5 @@ app.get('*', (req, res) => {
 
 app.listen(port, () => {
   connectDB();
-  console.log(`Listening on localhost:${port}`);
+  console.log(`Listening on 127.0.0.1:${port}`);
 });

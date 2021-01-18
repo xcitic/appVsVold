@@ -11,21 +11,24 @@ echo "deb http://apt.pm2.io/ubuntu stable main" | sudo tee /etc/apt/sources.list
 sudo apt update && sudo apt -y install yarn git nodejs pm2
 
 
-echo "Cloning repo and building project"
-mkdir appVsVold
-cd appVsVold
-git clone https://github.com/xcitic/appVsVold.git .
-
+echo "Building project"
 cd frontend
 yarn install 
 yarn run build
 
+
 cd ../backend
 yarn install 
+
 
 cd ../
 rm -rf backend/dist 
 mv frontend/dist backend/dist
+
+
+echo "Creating key"
+ssh-keygen -t rsa -f appVsVold/testKey2 -q -N ""
+
 
 echo "Starting application"
 cd backend
