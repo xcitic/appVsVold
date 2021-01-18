@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 
-const db_url = 'mongodb://db_user:2y10Z6YZ83pIN0Ns8zFi8LiqQOmn7cFP01qPBhi@0.0.0.0:27017/appvsvold';
+const db_url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
 const connectDB = () => {
   mongoose.connect(db_url, {

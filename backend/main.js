@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 import connectDB from './db/init.js';
 import {UserController, LogController, FileController} from './controllers/index.js';
@@ -21,8 +22,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-
 app.use(passport.initialize());
+app.use(express.static(__dirname + '/dist'));
 
 
 app.post('/login', async (req, res) => {
@@ -116,6 +117,10 @@ router.get('/file/:logId/:fileId', async (req, res) => {
 
 app.use('/api', router, (req, res) => {
     res.sendStatus(401);
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
 
